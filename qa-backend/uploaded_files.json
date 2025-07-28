@@ -1,0 +1,16 @@
+{
+  "4d0f34ddde79a0bb42942d53ca0fb984": {
+    "original_filname": "foo.txt",
+    "saved_as": "foo_225a9d56-d99e-4e5e-b63a-6c985c86ac0e.txt",
+    "saved_to": "uploads/foo_225a9d56-d99e-4e5e-b63a-6c985c86ac0e.txt",
+    "content_type": "text/plain",
+    "size": 26
+  },
+  "d85e8393b4f6d0f497fe107f3583dfb6": {
+    "original_filname": "foo2.txt",
+    "saved_as": "foo2_64770081-7377-4bc6-917a-1fa014fc77b3.txt",
+    "saved_to": "uploads/foo2_64770081-7377-4bc6-917a-1fa014fc77b3.txt",
+    "content_type": "text/plain",
+    "size": 59
+  }
+}
