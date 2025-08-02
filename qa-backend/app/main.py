@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, File
+from app.services.document_processor import extract_text_from_file
 import uuid
 import os
 import json
@@ -95,12 +96,16 @@ async def upload_file(file: UploadFile = File(...)):
     with open(file_path, "wb") as buffer:
         buffer.write(content)
     
+    file_extension = f".{extension}"
+    extracted_text = extract_text_from_file(file_path=file_path, file_extension=file_extension)
+
     file_info = {
         "original_filname": file.filename,
         "saved_as": unique_filename,
         "saved_to": file_path,
         "content_type": file.content_type,
-        "size": file.size
+        "size": file.size,
+        "extracted_text": extracted_text
     }
 
     uploaded_files[file_hash] = file_info
