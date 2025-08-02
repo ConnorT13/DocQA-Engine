@@ -55,6 +55,24 @@ async def upload_file(file: UploadFile = File(...)):
             "message": f"File size ({len(content):,} bytes) exceeds limit ({max_size:,} bytes)",
             "max_size_mb": 10
         }
+        
+    if len(content) == 0:
+        return{
+            "error": "Empty File",
+            "size": file.size,
+            "message": "File contains no content"
+        }
+
+    allowed_extensions = ['txt', 'pdf', 'docx']
+    file_extension = file.filename.split('.')[-1].lower()
+
+    if file_extension not in allowed_extensions:
+        return{
+            "error": "File type not supported",
+            "message": f"Please only submit .txt, .pdf, or .docx documents"
+        }
+
+
 
     file_hash = get_file_hash(content)
 

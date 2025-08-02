@@ -12,5 +12,26 @@
     "saved_to": "uploads/foo2_64770081-7377-4bc6-917a-1fa014fc77b3.txt",
     "content_type": "text/plain",
     "size": 59
+  },
+  "124ed6e423131fbf692f7f70cb3d2a38": {
+    "original_filname": "AAA_Volleyball-March.pdf",
+    "saved_as": "AAA_Volleyball-March_c1f71bd5-74cd-40f8-911a-ae6b2dd4211e.pdf",
+    "saved_to": "uploads/AAA_Volleyball-March_c1f71bd5-74cd-40f8-911a-ae6b2dd4211e.pdf",
+    "content_type": "application/pdf",
+    "size": 229167
+  },
+  "4a3df1764d8b22d9b0d30c9f44aee24f": {
+    "original_filname": "hi.this.is.a.test.txt",
+    "saved_as": "hi.this.is.a.test_97bb0401-1d2e-4042-8277-4fcdf128a662.txt",
+    "saved_to": "uploads/hi.this.is.a.test_97bb0401-1d2e-4042-8277-4fcdf128a662.txt",
+    "content_type": "text/plain",
+    "size": 78
+  },
+  "d41d8cd98f00b204e9800998ecf8427e": {
+    "original_filname": "empty.txt",
+    "saved_as": "empty_6a582af7-d432-4736-9b61-88ab8deaca88.txt",
+    "saved_to": "uploads/empty_6a582af7-d432-4736-9b61-88ab8deaca88.txt",
+    "content_type": "text/plain",
+    "size": 0
   }
 }
