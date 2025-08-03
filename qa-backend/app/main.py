@@ -1,9 +1,14 @@
 from fastapi import FastAPI, UploadFile, File
 from app.services.document_processor import extract_text_from_file
+from app.services.chunking import split_into_sentences, chunk_text
+from app.services.chunking import calculate_similarity
 import uuid
 import os
 import json
 import hashlib
+import logging
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="Q&A Engine API",
@@ -99,6 +104,13 @@ async def upload_file(file: UploadFile = File(...)):
     file_extension = f".{extension}"
     extracted_text = extract_text_from_file(file_path=file_path, file_extension=file_extension)
 
+    sentences = split_into_sentences(extracted_text)
+    logger.info(f"Split Split into {len(sentences)} sentences.")
+
+    chunks = chunk_text(sentences, chunk_size=20, overlap=2)
+    logger.info(f"Created {len(chunks)} chunks.")
+
+
     file_info = {
         "original_filname": file.filename,
         "saved_as": unique_filename,
@@ -112,7 +124,7 @@ async def upload_file(file: UploadFile = File(...)):
     
     save_uploaded_files()
 
-    return {**file_info, "duplicate": False}
+    return {**file_info, "duplicate": False, "chunks": chunks}
 
 @app.post("/test-hash")
 async def test_hash(file: UploadFile = File(...)):

@@ -1,0 +1,34 @@
+.
+├── LICENSE
+├── project_structure.txt
+├── qa-backend
+│   ├── app
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   │   ├── __init__.cpython-310.pyc
+│   │   │   └── main.cpython-310.pyc
+│   │   ├── config.py
+│   │   ├── main.py
+│   │   ├── models
+│   │   ├── routes
+│   │   │   ├── __init__.py
+│   │   │   └── documents.py
+│   │   └── services
+│   │       ├── __init__.py
+│   │       ├── chunking.py
+│   │       └── document_processor.py
+│   ├── uploaded_files.json
+│   └── uploads
+│       ├── AAA_Volleyball-March_c1f71bd5-74cd-40f8-911a-ae6b2dd4211e.pdf
+│       ├── empty_6a582af7-d432-4736-9b61-88ab8deaca88.txt
+│       ├── foo_225a9d56-d99e-4e5e-b63a-6c985c86ac0e.txt
+│       ├── foo2_64770081-7377-4bc6-917a-1fa014fc77b3.txt
+│       └── hi.this.is.a.test_97bb0401-1d2e-4042-8277-4fcdf128a662.txt
+└── testfiles
+    ├── empty.txt
+    ├── foo.txt
+    ├── foo2.txt
+    ├── hi.this.is.a.test.txt
+    └── testnoext
+
+9 directories, 23 files
