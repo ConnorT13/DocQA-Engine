@@ -18,7 +18,6 @@ app = FastAPI(
 
 uploaded_files = {} # for hashing (file info)
 
-
 def get_file_hash(file_content: bytes) -> str:
     return hashlib.md5(file_content).hexdigest()
 
@@ -110,6 +109,9 @@ async def upload_file(file: UploadFile = File(...)):
     chunks = chunk_text(sentences, chunk_size=20, overlap=2)
     logger.info(f"Created {len(chunks)} chunks.")
 
+    # Add chunks to vector store
+    vector_store.add_chunks(chunks, file_info)
+    logger.info(f"Added {len(chunks)} chunks to vector store.")
 
     file_info = {
         "original_filname": file.filename,
