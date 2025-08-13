@@ -32,4 +32,22 @@ class VectorStore:
         )
     
     def search(self, query: str, k: int = 5) -> List[Dict]:
-        pass
+        results = self.collection.query(
+            query_texts=[query],
+            n_results=k
+        )
+        documents = results['documents'][0]
+        metadatas = results['metadatas'][0]
+        distances = results['distances'][0]
+
+        formatted_results = []
+
+        for i, doc in enumerate(documents):
+            formatted_results.append({
+                'chunk': doc,
+                "metadata": metadatas[i],
+                'distance': distances[i]
+            })
+
+        return formatted_results
+        

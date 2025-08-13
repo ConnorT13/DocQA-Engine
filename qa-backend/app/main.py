@@ -2,6 +2,7 @@ from fastapi import FastAPI, UploadFile, File
 from app.services.document_processor import extract_text_from_file
 from app.services.chunking import split_into_sentences, chunk_text
 from app.services.chunking import calculate_similarity
+from app.services.vector_store import VectorStore
 import uuid
 import os
 import json
@@ -17,6 +18,7 @@ app = FastAPI(
 )
 
 uploaded_files = {} # for hashing (file info)
+vector_store = VectorStore()
 
 def get_file_hash(file_content: bytes) -> str:
     return hashlib.md5(file_content).hexdigest()
@@ -110,9 +112,6 @@ async def upload_file(file: UploadFile = File(...)):
     logger.info(f"Created {len(chunks)} chunks.")
 
     # Add chunks to vector store
-    vector_store.add_chunks(chunks, file_info)
-    logger.info(f"Added {len(chunks)} chunks to vector store.")
-
     file_info = {
         "original_filname": file.filename,
         "saved_as": unique_filename,
@@ -121,6 +120,11 @@ async def upload_file(file: UploadFile = File(...)):
         "size": file.size,
         "extracted_text": extracted_text
     }
+
+    vector_store.add_chunks(chunks, file_info)
+    logger.info(f"Added {len(chunks)} chunks to vector store.")
+
+    
 
     uploaded_files[file_hash] = file_info
     
@@ -139,3 +143,7 @@ async def test_hash(file: UploadFile = File(...)):
         "size": len(content)
     }
 
+@app.post("/query")
+async def query_documents(query: str):
+    results = vector_store.search(query)
+    return {"results": results}
