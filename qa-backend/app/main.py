@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Form
 from app.services.document_processor import extract_text_from_file
 from app.services.chunking import split_into_sentences, chunk_text
 from app.services.chunking import calculate_similarity
@@ -89,7 +89,8 @@ async def upload_file(file: UploadFile = File(...)):
             "message": "File already exists!",
             "original_filename": file.filename,
             "existing_file": existing_file,
-            "duplicate": True
+            "duplicate": True,
+            "chunks": existing_file.get("chunks", [])
         }
 
     os.makedirs("uploads", exist_ok=True)
@@ -113,12 +114,13 @@ async def upload_file(file: UploadFile = File(...)):
 
     # Add chunks to vector store
     file_info = {
-        "original_filname": file.filename,
+        "original_filename": file.filename,
         "saved_as": unique_filename,
         "saved_to": file_path,
         "content_type": file.content_type,
         "size": file.size,
-        "extracted_text": extracted_text
+        "extracted_text": extracted_text,
+        "chunks": chunks
     }
 
     vector_store.add_chunks(chunks, file_info)
@@ -144,6 +146,6 @@ async def test_hash(file: UploadFile = File(...)):
     }
 
 @app.post("/query")
-async def query_documents(query: str):
+async def query_documents(query: str = Form(...)):
     results = vector_store.search(query)
     return {"results": results}
