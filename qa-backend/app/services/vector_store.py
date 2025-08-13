@@ -45,7 +45,7 @@ class VectorStore:
         for i, doc in enumerate(documents):
             formatted_results.append({
                 'chunk': doc,
-                "metadata": metadatas[i],
+                'metadata': metadatas[i],
                 'distance': distances[i]
             })
 

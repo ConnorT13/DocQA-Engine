@@ -3,6 +3,7 @@ from app.services.document_processor import extract_text_from_file
 from app.services.chunking import split_into_sentences, chunk_text
 from app.services.chunking import calculate_similarity
 from app.services.vector_store import VectorStore
+from app.services.llm_service import LLMService
 import uuid
 import os
 import json
@@ -19,6 +20,7 @@ app = FastAPI(
 
 uploaded_files = {} # for hashing (file info)
 vector_store = VectorStore()
+llm_service = LLMService()
 
 def get_file_hash(file_content: bytes) -> str:
     return hashlib.md5(file_content).hexdigest()
@@ -49,6 +51,10 @@ def read_root():
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
+
+@app.get("/uploaded-files")
+def get_uploaded_files():
+    return {"uploaded_files": uploaded_files}
 
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
@@ -126,8 +132,6 @@ async def upload_file(file: UploadFile = File(...)):
     vector_store.add_chunks(chunks, file_info)
     logger.info(f"Added {len(chunks)} chunks to vector store.")
 
-    
-
     uploaded_files[file_hash] = file_info
     
     save_uploaded_files()
@@ -149,3 +153,23 @@ async def test_hash(file: UploadFile = File(...)):
 async def query_documents(query: str = Form(...)):
     results = vector_store.search(query)
     return {"results": results}
+
+
+@app.post("/ask")
+async def ask_llm(question: str = Form(...)):
+    relevant_chunks = vector_store.search(question, k=5)
+
+    if not relevant_chunks:
+        return {
+            "answer": "I couldn't find any relevant information in your documents to answer this question.",
+            "chunks_used": [],
+            "question": question
+        }
+
+    answer = llm_service.generate_answer(question, relevant_chunks)
+
+    return {
+        "answer": answer,
+        "chunks_used": relevant_chunks,
+        "question": question
+    }

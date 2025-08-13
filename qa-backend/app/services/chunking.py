@@ -21,7 +21,7 @@ def split_into_sentences(text: str) -> List[str]:
     sentences = sent_tokenize(text)
     return [sentence.strip() for sentence in sentences if sentence.strip()]
 
-def chunk_text(sentences: List[str], chunk_size: int = 20, overlap: int = 2) -> List[str]:
+def chunk_text(sentences: List[str], chunk_size: int = 10, overlap: int = 5) -> List[str]:
     chunks = []
     i = 0
     while i < len(sentences):
